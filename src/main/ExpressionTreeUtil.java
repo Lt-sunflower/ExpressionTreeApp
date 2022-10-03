@@ -12,6 +12,10 @@ public class ExpressionTreeUtil {
 	private static Map<Character,Integer> numberMap = new HashMap<>();
 	private static LinkedList<String> tree = new LinkedList<>();
 	
+	public void clearTree() {
+		tree = new LinkedList<>();
+	}
+	
 	public Map<Character,Integer> storeNumbers(String input) {
 		
     	Map<Character,Integer> result = new HashMap<>();
@@ -40,7 +44,37 @@ public class ExpressionTreeUtil {
     			if (!result.containsValue(temp))
     				result.put(temp2, temp);
     			index++; s="";
-    		} 
+    		} else if (c == '-')
+    		{
+    			ArrayList<Character> negOps = new ArrayList<>();
+    			negOps.add('+');
+    			negOps.add('*');
+    			negOps.add('/');
+    			negOps.add('(');
+    			
+    			// Negative sign if 1. at start of expression 2. after operator 3. after open parenthesis
+    			if (i==0 || negOps.contains(input.charAt(i-1)))
+    			{
+    				s += c;
+        			i+=1;
+        			while(i<input.length())
+        			{
+        				
+        				if (Character.isDigit(input.charAt(i)))
+        				{
+        					s += input.charAt(i);
+        					i+=1;
+        				} else break;
+        				
+        			}
+        			int temp = Integer.parseInt(s);
+        			Character temp2 = (char) ('A'+index);
+        			if (!result.containsValue(temp))
+        				result.put(temp2, temp);
+        			index++; s="";
+    			}
+    		}
+
     	}
     	
     	numberMap = result;
@@ -123,7 +157,23 @@ public class ExpressionTreeUtil {
         {
         	// Add operands as leaf nodes, and add them into stack
         	if (Character.isLetterOrDigit(c)) {
-        		s.add(new Node(c));
+				Integer value = numberMap.get(c);
+        		
+				if (value == null)
+				{
+					value = Character.getNumericValue(c);
+				}
+				
+        		if (value < 0)
+        		{
+        			value *= -1;
+        			Node numberNode = new Node(value);
+        			Node negativeNode = new Node("-",null,numberNode);
+        			s.add(negativeNode);
+        		} else {
+            		s.add(new Node(value));
+        		}
+
         	}
         	else { // Operator
                 
@@ -145,10 +195,63 @@ public class ExpressionTreeUtil {
 	
 	}
 	
-	public void printTree(Node root) {
-		// TODO Auto-generated method stub
+	public String printTree(Node root) {
+
+		int height = getHeight(root);
+		for (int i = 1; i <= height; i++) {
+			populateTree(root, i);
+		}
 		
+		return printTree();	
 	}
+	
+	int getHeight(Node root) {
+        
+		if (root == null)
+            return 0;
+        else {
+            /* compute  height of each subtree */
+            int lheight = getHeight(root.left);
+            int rheight = getHeight(root.right);
+ 
+            /* use the larger one */
+            if (lheight > rheight)
+                return (lheight + 1);
+            else
+                return (rheight + 1);
+        }
+
+	}
+	
+	void populateTree(Node node, int parent) {
+		// Add values to linkedlist sequentially using BFS
+        if (node == null) {
+        	tree.add(" ");
+            return;
+        }
+        if (parent == 1){
+        	tree.add(node.value);
+        }
+        else if (parent > 1) {
+        	populateTree(node.left, parent - 1);
+        	populateTree(node.right, parent - 1);
+        }	
+	}
+	
+    String printTree() {
+    	StringBuilder sb = new StringBuilder();
+    	Iterator<String> iterator = tree.iterator();
+		sb.append("Expression Tree: [");
+		while (iterator.hasNext()) {
+			sb.append(iterator.next()+",");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		
+		System.out.println(sb);
+		return sb.toString().substring(17);
+	}
+
 
 	public double solveExpressionTree(Node root) {
 
@@ -159,11 +262,11 @@ public class ExpressionTreeUtil {
         // If node is a leaf node
         if (root.left == null && root.right == null) {
         	
-        	// Retrieve value from HashMap and return
-        	if (!Character.isDigit(root.value.charAt(0)))
-        		return Double.valueOf(numberMap.get(root.value.charAt(0)));
+        	// Retrieve value from HashMap and return (not required as value already converted for Exp Tree)
+//        	if (!Character.isDigit(root.value.charAt(0)))
+//        		return Double.valueOf(numberMap.get(root.value.charAt(0)));
         	// Return value
-        	else
+//        	else
         		return Double.valueOf(root.value);
         }
  
