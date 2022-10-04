@@ -168,9 +168,14 @@ public class ExpressionTreeUtil {
 				value = Character.getNumericValue(c);
 			} else { // Operator
                 
+				Node left = null;
+				Node right = null;
             	// Pop 2 items from stack
-                Node right = s.pop();
-                Node left = s.pop();
+				if (s.size()>=2) {
+	                right = s.pop();
+	                left = s.pop();
+				} else
+					return null;
  
                 // Assign nodes as child of operator
                 Node node = new Node(String.valueOf(c), left, right);

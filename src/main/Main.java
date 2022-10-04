@@ -25,7 +25,7 @@ public class Main {
 			input = args[0];
 		}
 		
-//		String input = "5+9)";
+//		String input = "5++9";
 		
 		// 1.1 Replace int with char(construct HashMap)
 		Map<Character,Integer> numberMap = expressionTreeUtil.storeNumbers(input);
