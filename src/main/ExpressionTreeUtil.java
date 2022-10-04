@@ -293,7 +293,7 @@ public class ExpressionTreeUtil {
     
 	}
 	
-	double calculate(String op, double x, double y)
+	public double calculate(String op, double x, double y)
     {
         if (op.equals("+")) { return x + y; }
         if (op.equals("-")) { return x - y; }
