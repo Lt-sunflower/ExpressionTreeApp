@@ -10,7 +10,7 @@ public class Main {
 		
 		// 1. Retrieve user input (from args)
 		String input = "";
-		if (args.length != 1 && !args[0].equals(null))
+		if (args.length != 1)
 		{
 			System.out.println("Invalid Input.");
 			return;
