@@ -5,6 +5,7 @@ public class Node {
 	public String value;
 	public Node left;
 	public Node right;
+	int position;
 	
 	public Node(String data)
     {

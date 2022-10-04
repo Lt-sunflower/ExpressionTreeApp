@@ -128,7 +128,7 @@ class ExpressionTreeUtilTest {
 		
 		String s = expressionTreeUtil.printTree(root);
 		
-		assertEquals("[+,+,4,+,3, , ,1,2, , , , ]", s);
+		assertEquals("[+,+,4,+,3, , ,1,2, , , , , , ]", s);
 		
 	}
 	
@@ -159,7 +159,7 @@ class ExpressionTreeUtilTest {
 		String s = expressionTreeUtil.printTree(root);
 		
 		// Limitation of not able to handle >1digit integers
-		assertNotEquals("[-,*,+,/,-,2,+,15,-, ,3, , ,1,1, , ,7,+, , , , , , , , , , , , , ,1,1, , , , , , , , , ]", s);
+		assertNotEquals("[-,*,+,/,-,2,+,15,-, ,3, , ,1,1, , ,7,+, , , , , , , , , , , , , , , , , , ,1,1, , , , , , , , , , , , , , , , , , , , , , , , ]", s);
 		
 	}
 	
@@ -225,8 +225,7 @@ class ExpressionTreeUtilTest {
 		String s = expressionTreeUtil.printTree(root);
 		
 		// Handles >2digits by using value from HashMap
-		assertEquals("[-,*,+,/,-,2,+,15,-, ,3, , ,1,1, , ,7,+, , , , , , , , , , , , , ,1,1, , , , , , , , , ]", s);
-		
+		assertEquals("[-,*,+,/,-,2,+,15,-, ,3, , ,1,1, , ,7,+, , , , , , , , , , , , , , , , , , ,1,1, , , , , , , , , , , , , , , , , , , , , , , , ]", s);
 	}
 	
 	@Test

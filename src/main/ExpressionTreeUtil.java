@@ -5,15 +5,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 
 public class ExpressionTreeUtil {
 
 	private static Map<Character,Integer> numberMap = new HashMap<>();
 	private static LinkedList<String> tree = new LinkedList<>();
+	private String[] expTree;
 	
 	public void clearTree() {
 		tree = new LinkedList<>();
+		expTree = null;
 	}
 	
 	public Map<Character,Integer> storeNumbers(String input) {
@@ -212,13 +215,67 @@ public class ExpressionTreeUtil {
 	public String printTree(Node root) {
 
 		int height = getHeight(root);
-		for (int i = 1; i <= height; i++) {
-			populateTree(root, i);
-		}
+//		System.out.println(height);
+//		for (int i = 1; i <= height; i++) {
+//			populateTree(root, i);
+//		}
+		
+		int size = (int) Math.pow(2,height);
+		expTree = new String[size-1];
+		populateTree(root);
 		
 		return printTree();	
 	}
 	
+	public String printTree() {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("Expression Tree: [");
+		for (int i=0; i<expTree.length; i++)
+		{
+			if (expTree[i] != null)
+			{
+				sb.append(expTree[i]+",");
+			}
+			else
+			{
+				sb.append(" ,");
+			}
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		
+		System.out.println(sb);
+		return sb.toString().substring(17);
+	}
+
+	public void populateTree(Node root) {
+
+		root.position=0;
+		Queue<Node> fifo = new LinkedList<>();
+		fifo.add(root);
+		
+		while (!fifo.isEmpty())
+		{
+			Node node = fifo.remove();
+			if (node.left != null)
+			{
+				Node left = node.left;
+				left.position = 2*node.position+1;
+				fifo.add(left);
+			}
+			if (node.right!= null)
+			{
+				Node right = node.right;
+				right.position = 2*node.position+2;
+				fifo.add(right);
+			}
+			
+			expTree[node.position] = node.value;
+		}
+		
+	}
+
 	int getHeight(Node root) {
         
 		if (root == null)
@@ -237,34 +294,34 @@ public class ExpressionTreeUtil {
 
 	}
 	
-	void populateTree(Node node, int parent) {
-		// Add values to linkedlist sequentially using BFS
-        if (node == null) {
-        	tree.add(" ");
-            return;
-        }
-        if (parent == 1){
-        	tree.add(node.value);
-        }
-        else if (parent > 1) {
-        	populateTree(node.left, parent - 1);
-        	populateTree(node.right, parent - 1);
-        }	
-	}
-	
-    String printTree() {
-    	StringBuilder sb = new StringBuilder();
-    	Iterator<String> iterator = tree.iterator();
-		sb.append("Expression Tree: [");
-		while (iterator.hasNext()) {
-			sb.append(iterator.next()+",");
-		}
-		sb.deleteCharAt(sb.length()-1);
-		sb.append("]");
-		
-		System.out.println(sb);
-		return sb.toString().substring(17);
-	}
+//	void populateTree(Node node, int parent) {
+//		// Add values to linkedlist sequentially using BFS
+//        if (node == null) {
+//        	tree.add(" ");
+//            return;
+//        }
+//        if (parent == 1){
+//        	tree.add(node.value);
+//        }
+//        else if (parent > 1) {
+//        	populateTree(node.left, parent - 1);
+//        	populateTree(node.right, parent - 1);
+//        }	
+//	}
+//	
+//    String printTree() {
+//    	StringBuilder sb = new StringBuilder();
+//    	Iterator<String> iterator = tree.iterator();
+//		sb.append("Expression Tree: [");
+//		while (iterator.hasNext()) {
+//			sb.append(iterator.next()+",");
+//		}
+//		sb.deleteCharAt(sb.length()-1);
+//		sb.append("]");
+//		
+//		System.out.println(sb);
+//		return sb.toString().substring(17);
+//	}
 
 
 	public double solveExpressionTree(Node root) {
