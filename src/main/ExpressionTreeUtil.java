@@ -99,6 +99,10 @@ public class ExpressionTreeUtil {
  
             // If ')' pop until '(' is found
             else if (c == ')') {
+            	if (!stack.contains('('))
+            	{
+            		return "Invalid Expression";
+            	}
                 while (!stack.isEmpty() && stack.peek() != '(') 
                 {
                     result += stack.pop();
@@ -156,26 +160,13 @@ public class ExpressionTreeUtil {
         for (char c: postfix.toCharArray())
         {
         	// Add operands as leaf nodes, and add them into stack
-        	if (Character.isLetterOrDigit(c)) {
-				Integer value = numberMap.get(c);
-        		
-				if (value == null)
-				{
-					value = Character.getNumericValue(c);
-				}
-				
-        		if (value < 0)
-        		{
-        			value *= -1;
-        			Node numberNode = new Node(value);
-        			Node negativeNode = new Node("-",null,numberNode);
-        			s.add(negativeNode);
-        		} else {
-            		s.add(new Node(value));
-        		}
-
-        	}
-        	else { // Operator
+        	Integer value = null;
+        	if (Character.isLetter(c)) {
+				value = numberMap.get(c);
+        	} else if (Character.isDigit(c))
+			{
+				value = Character.getNumericValue(c);
+			} else { // Operator
                 
             	// Pop 2 items from stack
                 Node right = s.pop();
@@ -188,10 +179,28 @@ public class ExpressionTreeUtil {
                 s.add(node);
 
         	}
+			
+        	if (value != null) {
+        		
+        		if (value < 0)
+        		{
+        			value *= -1;
+        			Node numberNode = new Node(value);
+        			Node negativeNode = new Node("-",null,numberNode);
+        			s.add(negativeNode);
+        		} else {
+            		s.add(new Node(value));
+        		}
+
+        	}
+        	
         }
  
         // Return root node
-        return s.peek();
+        if (!s.isEmpty())
+        	return s.peek();
+        else 
+        	return null;
 	
 	}
 	

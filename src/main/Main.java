@@ -17,10 +17,15 @@ public class Main {
 		}
 		else
 		{
+			if (args[0].contains("^"))
+			{
+				System.out.println("^ is not supported.");
+				return;
+			}
 			input = args[0];
 		}
 		
-//		String input = "1+2+3+4";
+//		String input = "5+9)";
 		
 		// 1.1 Replace int with char(construct HashMap)
 		Map<Character,Integer> numberMap = expressionTreeUtil.storeNumbers(input);
@@ -32,10 +37,20 @@ public class Main {
 		
 		// 2. infixToPostfix
 		String postfix = expressionTreeUtil.infixToPostfix(input);
+		if (postfix.equals("Invalid Expression"))
+		{
+			System.out.println("Invalid Expression");
+			return;
+		}
 //		System.out.println(postfix);
 		
 		// 3. postfixToExpressionTree
 		Node root = expressionTreeUtil.postfixToExpressionTree(postfix);
+		if (root == null)
+		{
+			System.out.println("Invalid Expression");
+			return;
+		}
 		
 		// 3.1 print tree
 		expressionTreeUtil.printTree(root);
