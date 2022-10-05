@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -25,9 +26,11 @@ public class ExpressionTreeUtil {
     	String s = "";
     	int index = 0;
     	
+    	// Traverse through string
     	for(int i=0; i<input.length(); i++)
     	{
     		char c = input.charAt(i);
+    		// If digit, get the whole integer
     		if (Character.isDigit(c))
     		{
     			s += c;
@@ -49,6 +52,7 @@ public class ExpressionTreeUtil {
     			index++; s="";
     		} else if (c == '-')
     		{
+    			// Handling for negative numbers, not taking into consideration "--a"
     			ArrayList<Character> negOps = new ArrayList<>();
     			negOps.add('+');
     			negOps.add('*');
@@ -146,6 +150,7 @@ public class ExpressionTreeUtil {
         case '/':
             return 2;
  
+        // Remove handling for ^, since problem does not require
 //        case '^':
 //            return 3;
         }
@@ -188,8 +193,10 @@ public class ExpressionTreeUtil {
 
         	}
 			
+        	// Create node and add to stack
         	if (value != null) {
         		
+        		// Negative value handling
         		if (value < 0)
         		{
         			value *= -1;
@@ -197,6 +204,7 @@ public class ExpressionTreeUtil {
         			Node negativeNode = new Node("-",null,numberNode);
         			s.add(negativeNode);
         		} else {
+        			// Positive
             		s.add(new Node(value));
         		}
 
@@ -214,39 +222,18 @@ public class ExpressionTreeUtil {
 	
 	public String printTree(Node root) {
 
+		// Create array of size 2^height-1
 		int height = getHeight(root);
-//		System.out.println(height);
-//		for (int i = 1; i <= height; i++) {
-//			populateTree(root, i);
-//		}
 		
 		int size = (int) Math.pow(2,height);
 		expTree = new String[size-1];
+		// Place items in array
 		populateTree(root);
 		
-		return printTree();	
-	}
-	
-	public String printTree() {
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append("Expression Tree: [");
-		for (int i=0; i<expTree.length; i++)
-		{
-			if (expTree[i] != null)
-			{
-				sb.append(expTree[i]+",");
-			}
-			else
-			{
-				sb.append(" ,");
-			}
-		}
-		sb.deleteCharAt(sb.length()-1);
-		sb.append("]");
-		
-		System.out.println(sb);
-		return sb.toString().substring(17);
+		// Print array contents
+		String result = new ArrayList<String>(Arrays.asList(expTree)).toString();
+		System.out.println(result);
+		return result;	
 	}
 
 	public void populateTree(Node root) {
@@ -255,6 +242,7 @@ public class ExpressionTreeUtil {
 		Queue<Node> fifo = new LinkedList<>();
 		fifo.add(root);
 		
+		// Pop 1, push left&right, left-index=2n+1, right-index=2n+2
 		while (!fifo.isEmpty())
 		{
 			Node node = fifo.remove();
@@ -281,11 +269,11 @@ public class ExpressionTreeUtil {
 		if (root == null)
             return 0;
         else {
-            /* compute  height of each subtree */
+            // Recursion
             int lheight = getHeight(root.left);
             int rheight = getHeight(root.right);
  
-            /* use the larger one */
+            // Return longer "branch"
             if (lheight > rheight)
                 return (lheight + 1);
             else
@@ -293,36 +281,6 @@ public class ExpressionTreeUtil {
         }
 
 	}
-	
-//	void populateTree(Node node, int parent) {
-//		// Add values to linkedlist sequentially using BFS
-//        if (node == null) {
-//        	tree.add(" ");
-//            return;
-//        }
-//        if (parent == 1){
-//        	tree.add(node.value);
-//        }
-//        else if (parent > 1) {
-//        	populateTree(node.left, parent - 1);
-//        	populateTree(node.right, parent - 1);
-//        }	
-//	}
-//	
-//    String printTree() {
-//    	StringBuilder sb = new StringBuilder();
-//    	Iterator<String> iterator = tree.iterator();
-//		sb.append("Expression Tree: [");
-//		while (iterator.hasNext()) {
-//			sb.append(iterator.next()+",");
-//		}
-//		sb.deleteCharAt(sb.length()-1);
-//		sb.append("]");
-//		
-//		System.out.println(sb);
-//		return sb.toString().substring(17);
-//	}
-
 
 	public double solveExpressionTree(Node root) {
 
@@ -333,12 +291,7 @@ public class ExpressionTreeUtil {
         // If node is a leaf node
         if (root.left == null && root.right == null) {
         	
-        	// Retrieve value from HashMap and return (not required as value already converted for Exp Tree)
-//        	if (!Character.isDigit(root.value.charAt(0)))
-//        		return Double.valueOf(numberMap.get(root.value.charAt(0)));
-        	// Return value
-//        	else
-        		return Double.valueOf(root.value);
+        	return Double.valueOf(root.value);
         }
  
         // Recursive, depth-first (post-traversal: l-r-R)

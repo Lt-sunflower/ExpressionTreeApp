@@ -9,23 +9,23 @@ public class Main {
 		ExpressionTreeUtil expressionTreeUtil = new ExpressionTreeUtil();
 		
 		// 1. Retrieve user input (from args)
-		String input = "";
-		if (args.length != 1)
-		{
-			System.out.println("Invalid Input.");
-			return;
-		}
-		else
-		{
-			if (args[0].contains("^"))
-			{
-				System.out.println("^ is not supported.");
-				return;
-			}
-			input = args[0];
-		}
+//		String input = "";
+//		if (args.length != 1)
+//		{
+//			System.out.println("Invalid Input.");
+//			return;
+//		}
+//		else
+//		{
+//			if (args[0].contains("^"))
+//			{
+//				System.out.println("^ is not supported.");
+//				return;
+//			}
+//			input = args[0];
+//		}
 		
-//		String input = "((15/(7-(1+1)))*-3)-(2+(1+1))";
+		String input = "1-(10)";
 		
 		// 1.1 Replace int with char(construct HashMap)
 		Map<Character,Integer> numberMap = expressionTreeUtil.storeNumbers(input);
