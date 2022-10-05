@@ -128,7 +128,7 @@ class ExpressionTreeUtilTest {
 		
 		String s = expressionTreeUtil.printTree(root);
 		
-		assertEquals("[+,+,4,+,3, , ,1,2, , , , , , ]", s);
+		assertEquals("[+, +, 4, +, 3, null, null, 1, 2, null, null, null, null, null, null]", s);
 		
 	}
 	
@@ -143,7 +143,7 @@ class ExpressionTreeUtilTest {
 		
 		String s = expressionTreeUtil.printTree(root);
 		
-		assertEquals("[*,/,+,8,2,2,2]", s);
+		assertEquals("[*, /, +, 8, 2, 2, 2]", s);
 		
 	}
 	
@@ -225,7 +225,7 @@ class ExpressionTreeUtilTest {
 		String s = expressionTreeUtil.printTree(root);
 		
 		// Handles >2digits by using value from HashMap
-		assertEquals("[-,*,+,/,-,2,+,15,-, ,3, , ,1,1, , ,7,+, , , , , , , , , , , , , , , , , , ,1,1, , , , , , , , , , , , , , , , , , , , , , , , ]", s);
+		assertEquals("[-, *, +, /, -, 2, +, 15, -, null, 3, null, null, 1, 1, null, null, 7, +, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]", s);
 	}
 	
 	@Test
